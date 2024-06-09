@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .option-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navigation-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .navigation-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="optionsPage" class="container">
+        <h2>Welcome to Binary Tools</h2>
+        <div class="options-container">
+            <button class="option-button" onclick="showPage('decimalToBinaryForm')">Decimal to Binary Converter</button>
+            <button class="option-button" onclick="showPage('binaryToDecimalForm')">Binary to Decimal Converter</button>
+            <button class="option-button" onclick="showPage('binaryToTextForm')">Binary to Text Converter</button>
+            <button class="option-button" onclick="showPage('binaryCalculatorForm')">Binary Calculator</button>
+        </div>
+    </div>
+
+    <!-- Decimal to Binary Converter -->
+    <div id="decimalToBinaryForm" class="container" style="display: none;">
+        <h2>Decimal to Binary Converter</h2>
+        <form onsubmit="convertDecimalToBinary(); return false;">
+            <input type="text" id="decimalInput" placeholder="Enter decimal number"><br><br>
+            <input type="submit" value="Convert to Binary">
+        </form>
+        <p id="decimalToBinaryResult"></p>
+        <button class="navigation-button" onclick="showPage('optionsPage')">Other Options</button>
+    </div>
+
+    <!-- Binary to Decimal Converter -->
+    <div id="binaryToDecimalForm" class="container" style="display: none;">
+        <h2>Binary to Decimal Converter</h2>
+        <form onsubmit="convertBinaryToDecimal(); return false;">
+            <input type="text" id="binaryInput" placeholder="Enter binary number"><br><br>
+            <input type="submit" value="Convert to Decimal">
+        </form>
+        <p id="binaryToDecimalResult"></p>
+        <button class="navigation-button" onclick="showPage('optionsPage')">Other Options</button>
+    </div>
+
+    <!-- Binary to Text Converter -->
+    <div id="binaryToTextForm" class="container" style="display: none;">
+        <h2>Binary to Text Converter</h2>
+        <form onsubmit="convertBinaryToText(); return false;">
+            <input type="text" id="binaryTextInput" placeholder="Enter binary number"><br><br>
+            <input type="submit" value="Convert to Text">
+        </form>
+        <p id="binaryToTextResult"></p>
+        <button class="navigation-button" onclick="showPage('optionsPage')">Other Options</button>
+    </div>
+
+    <!-- Binary Calculator -->
+    <div id="binaryCalculatorForm" class="container" style="display: none;">
+        <h2>Binary Calculator</h2>
+        <form onsubmit="calculateBinary(); return false;">
+            <input type="text" id="binaryNum1" placeholder="Enter first binary number"><br><br>
+            <select id="operator">
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select><br><br>
+            <input type="text" id="binaryNum2" placeholder="Enter second binary number"><br><br>
+            <input type="submit" value="Calculate">
+        </form>
+        <p id="binaryCalculatorResult"></p>
+        <button class="navigation-button" onclick="showPage('optionsPage')">Other Options</button>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            var pages = document.querySelectorAll('.container');
+            pages.forEach(function(page) {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+            var navigationButton = document.querySelector('.navigation-button');
+            if (pageId !== 'optionsPage' && !navigationButton) {
+                var backButton = document.createElement('button');
+                backButton.className = 'navigation-button';
+                backButton.innerText = 'Other Options';
+                backButton.onclick = function() {
+                    document.getElementById('optionsPage').style.display = 'block';
+                    pages.forEach(function(page) {
+                        page.style.display = 'none';
+                    });
+                };
+                document.getElementById(pageId).appendChild(backButton);
+            }
+        }
+
+        function convertDecimalToBinary() {
+            var decimalInput = document.getElementById('decimalInput').value;
+            var binaryResult = (decimalInput >>> 0).toString(2);
+            document.getElementById('decimalToBinaryResult').innerText = "Binary equivalent: " + binaryResult;
+        }
+
+        function convertBinaryToDecimal() {
+            var binaryInput = document.getElementById('binaryInput').value;
+            var decimalResult = parseInt(binaryInput, 2);
+            document.getElementById('binaryToDecimalResult').innerText = "Decimal equivalent: " + decimalResult;
+        }
+
+        function convertBinaryToText() {
+            var binaryTextInput = document.getElementById('binaryTextInput').value;
+            var binaryArray = binaryTextInput.match(/.{1,8}/g); // Split binary string into array of 8-bit chunks
+            var text = '';
+            for (var i = 0; i < binaryArray.length; i++) {
+                text += String.fromCharCode(parseInt(binaryArray[i], 2)); // Convert each 8-bit chunk to decimal and then to character
+            }
+            document.getElementById('binaryToTextResult').innerText = "Text: " + text;
+        }
+
+        function calculateBinary() {
+            var binaryNum1 = document.getElementById('binaryNum1').value;
+            var binaryNum2 = document.getElementById('binaryNum2').value;
+            var operator = document.getElementById('operator').value;
+            var result;
+            switch (operator) {
+                case 'add':
+                    result = (parseInt(binaryNum1, 2) + parseInt(binaryNum2, 2)).toString(2);
+                    break;
+                case 'subtract':
+                    result = (parseInt(binaryNum1, 2) - parseInt(binaryNum2, 2)).toString(2);
+                    break;
+                case 'multiply':
+                    result = (parseInt(binaryNum1, 2) * parseInt(binaryNum2, 2)).toString(2);
+                    break;
+                case 'divide':
+                    if (parseInt(binaryNum2, 2) === 0) {
+                        result = "Cannot divide by zero";
+                    } else {
+                        result = (parseInt(binaryNum1, 2) / parseInt(binaryNum2, 2)).toString(2);
+                    }
+                    break;
+                default:
+                    result = "Invalid operator";
+            }
+            document.getElementById('binaryCalculatorResult').innerText = "Result: " + result;
+        }
+    </script>
+</body>
+</html>
